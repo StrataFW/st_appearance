@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://use.typekit.net/qgr5ebd.css');
+
+html, body {
+  margin: 0;
+  font-size: clamp(14px, 0.76vw, 16px);
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100vh;
+  user-select: none;
+  background: transparent !important;
+  background-color: transparent !important;
+  overflow: hidden;
+  color: #C1C2C5;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  min-height: 100dvh;
+}
+
+@media (min-width: 2200px), (min-height: 1300px) {
+  html, body {
+    font-size: clamp(16px, 0.68vw, 18px);
+  }
+}
+
+@media (max-width: 1366px), (max-height: 760px) {
+  html, body {
+    font-size: 14px;
+  }
+}
+
+.mantine-Modal-body,
+.mantine-Modal-modal,
+.mantine-Slider-root,
+.mantine-Slider-trackContainer {
+  overflow: visible;
+}
+
+.mantine-Slider-label {
+  max-width: none;
+  white-space: nowrap;
+  z-index: 40;
+}
+
+.mantine-NumberInput-input {
+  min-width: 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Hide scrollbars */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide Mantine ScrollArea scrollbars */
+.mantine-ScrollArea-scrollbar,
+[data-radix-scroll-area-scrollbar],
+[data-orientation] {
+  display: none !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

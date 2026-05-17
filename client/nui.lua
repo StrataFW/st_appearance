@@ -1,0 +1,96 @@
+local config <const> = require("config")
+
+local localeModule = nil
+pcall(function()
+  localeModule = require("shared.locale")
+  localeModule.init()
+end)
+
+local nui = {}
+
+nui.ready = false
+nui.visible = false
+
+---@return table?
+local function getPedMenuPedModels()
+  if not config.pedMenu or type(config.pedMenu.models) ~= "table" then
+    return nil
+  end
+
+  return config.pedMenu.models
+end
+
+---@return boolean
+function nui.isVisible()
+  return nui.visible
+end
+
+---@param visible boolean
+---@param focus boolean?
+function nui.setVisible(visible, focus)
+  if type(focus) == "boolean" then
+    SetNuiFocus(visible, visible)
+  end
+
+  nui.visible = visible
+  nui.sendMessage("setVisible", { visible = visible })
+end
+
+---@param action string
+---@param data table?
+function nui.sendMessage(action, data)
+  data = data or {}
+
+  SendNUIMessage({ action = action, data = data })
+end
+
+---@param message string
+---@param handler function
+function nui.handleMessage(message, handler)
+  RegisterNUICallback(message, function(body, cb)
+    handler(body)
+    cb("ok")
+  end)
+end
+
+nui.handleMessage("ready", function()
+  if nui.ready then return end
+
+  nui.ready = true
+  nui.sendMessage("setConfig", {
+    cameraPresets = config.cameraPresets,
+    lightingPresets = config.lightingPresets,
+    cameraDefaults = config.cameraDefaults,
+    cameraRanges = config.cameraRanges,
+    eyeColorMax = config.eyeColorMax,
+    animations = config.animations,
+    overlayLabels = config.overlayLabels,
+    overlayGroups = config.overlayGroups,
+    headBlendRanges = config.headBlendRanges,
+    faceFeatureLabels = config.faceFeatureLabels,
+    componentLabels = config.componentLabels,
+    clothingComponentGroups = config.clothingComponentGroups,
+    accessoryComponentIds = config.accessoryComponentIds,
+    propLabels = config.propLabels,
+    propIds = config.propIds,
+    tattooZones = config.rcoreTattoosCompatibility and {} or config.tattooZones,
+    faceRegions = config.faceRegions,
+    quickSlots = config.quickSlots,
+    walkStyles = config.walkStyles or {},
+    walkStyleCategories = config.walkStyleCategories or {},
+    pedModels = config.pedModels,
+    pedMenuPedModels = getPedMenuPedModels(),
+    pedMenuActive = false,
+    outfitCategories = config.outfitCategories,
+    locale = "en",
+    localeStrings = localeModule and localeModule.getAll() or {},
+    disabledComponents = config.disabledComponents or {},
+    disabledProps = config.disabledProps or {},
+    accentColor = config.accentColor or "blue",
+    prices = config.prices or {},
+    share = config.share or {},
+    rcoreTattoosCompatibility = config.rcoreTattoosCompatibility == true,
+  })
+end)
+
+return nui
